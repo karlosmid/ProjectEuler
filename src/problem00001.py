@@ -8,7 +8,7 @@ def sumDivBy(total,m):
     #1/2*p*(p+1)    
     p = (total-1)/m
     return m*p*(p+1)/2
-def problem001(total):
+def bruteforce(total):
     sum = 0    
     for i in range (3,total):
         if i%3 == 0:
@@ -20,5 +20,5 @@ def problem001(total):
 
 if __name__ == "__main__":
     total = 100000000
-#    print problem001(total)
+#    print bruteforce(total)
     print sumDivBy(total,3)+sumDivBy(total,5)-sumDivBy(total,15)
