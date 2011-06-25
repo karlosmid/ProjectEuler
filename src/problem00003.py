@@ -4,6 +4,7 @@
 __author__="karlo"
 __date__ ="$Jun 24, 2011 5:46:57 PM$"
 
+
 def maxPrimeFactor(m):
     for i in genPrime():
         if m%i == 0:
@@ -57,7 +58,8 @@ def isPrime(n):
 if __name__ == "__main__":
 #    import doctest
 #    doctest.testmod()
-    rez = maxPrimeFactor(600851475143)
+    number = 600851475143
+    rez = maxPrimeFactor(number)
     while rez != 1:
         print rez,
         rez = maxPrimeFactor(rez)
