@@ -25,39 +25,42 @@ def genPrime():
         prime = True
 def isPrime(n):
     """
-      >>> is_prime(1)
+      >>> isPrime(1)
       True
-      >>> is_prime(2)
+      >>> isPrime(2)
       True
-      >>> is_prime(3)
+      >>> isPrime(3)
       True
-      >>> is_prime(4)
+      >>> isPrime(4)
       False
-      >>> is_prime(5)
+      >>> isPrime(5)
       True
-      >>> is_prime(6)
+      >>> isPrime(6)
       False
-      >>> is_prime(7)
+      >>> isPrime(7)
       True
-      >>> is_prime(29)
+      >>> isPrime(29)
       True
-      >>> is_prime(3003)
+      >>> isPrime(3003)
       False
-      >>> is_prime(13195)
+      >>> isPrime(13195)
       False
+      >>> isPrime(104743)
+      True
     """
+    import math
     if n < 0:
         return False
     if n in [1,2,3]:
         return True
-    for i in range(2,n):
+    for i in range(2,int(math.sqrt(n))+1):
         if n%i == 0:
             return False
     return True
 
 if __name__ == "__main__":
-#    import doctest
-#    doctest.testmod()
+    import doctest
+    doctest.testmod()
     number = 600851475143
     rez = maxPrimeFactor(number)
     while rez != 1:
