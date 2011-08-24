@@ -6,28 +6,64 @@ __date__ ="$Jun 25, 2011 6:13:28 PM$"
 
 def testSieve():
     sieve(2000000)
-def testImprovedSieve():
-    sieveImproved(2000000)
-def sieveImproved(limit):
+def testSieveOnlyOddNumbers():
+    sieveUsingOnlyOddNumbers(2*1000*1000)
+def sieveUsingOnlyOddNumbers(upperLimit):
     import math
-    primes = []    
+    upperLimitOnlyOddNumber = (upperLimit -1)/2
+    limitOnlyOddNumbersUpToSqrt = int(math.sqrt(upperLimit)-1)/2
+    indexEsOfNumbers = initNumbersAllCrosed(upperLimitOnlyOddNumber)
+    indexEsOfNumbers = unCrossNotPrimesInNumbers(indexEsOfNumbers,
+                                                 upperLimitOnlyOddNumber,
+                                                 limitOnlyOddNumbersUpToSqrt)
+    sumOfPrimeNumbers = calcSumOfPrimes(indexEsOfNumbers)
+    print sumOfPrimeNumbers
+def initNumbersAllCrosed(upperLimit):
     i = 1
-    while i <= (limit-1)/2:
-        primes.append(True)
+    numbers = []
+    while i <= upperLimit:
+        numbers = addCrosed(numbers)
         i = i + 1
-    for i in range(1,int(math.sqrt(limit)-1)/2 +1):
-        if primes[i]:
-            j = 2*i*(i+1)
-            while j < (limit-1)/2:
-                primes[j] = False
-                j = j + 2*i+1
-    sum = 2
+    return numbers
+def addCrosed(number):
+    number.append(False)
+    return number
+def unCrossNotPrimesInNumbers(numbers,
+                              upperLimitOnlyOddNumber,
+                              limitOnlyOddNumbersUpToSqrt):        
+    rangeLimitOnlyOddNumbersUpToSqrt = range(1, limitOnlyOddNumbersUpToSqrt+1)
+    for i in rangeLimitOnlyOddNumbersUpToSqrt:
+        if isCrosed(numbers[i]):
+            j = calcSquareForOddNumberFromIndex(i)
+            while j < upperLimitOnlyOddNumber:
+                numbers = unCrossNumber(numbers,j)
+                j = j + calcOddFromIndex(i)
+    return numbers
+def isCrosed(number):
+    if not number:
+        return True
+    else:
+        return False
+def unCrossNumber(numbers,indexOfNumber):
+    numbers[indexOfNumber] = True
+    return numbers
+def calcSquareForOddNumberFromIndex(i):
+    return 2*i*(i+1)
+def calcOddFromIndex(i):
+    return 2*i+1
+def onlyOddPrimes(numbers):
+    #because 1 is not prime number
+    return numbers[1:]
+def calcSumOfPrimes(primes):
+    sumOfPrimeNumbers = 0
+    onlyEvenPrimeNumber = 2
+    sumOfPrimeNumbers = sumOfPrimeNumbers + onlyEvenPrimeNumber
     i = 1
-    for elem in primes[1:]: #because 1 is not prime number
-        if elem:
-            sum = sum + 2*i + 1
+    for elem in onlyOddPrimes(primes):
+        if isCrosed(elem):
+            sumOfPrimeNumbers = sumOfPrimeNumbers + calcOddFromIndex(i)
         i = i + 1
-    print sum
+    return sumOfPrimeNumbers
 def sieve(limit):
     import math
     primes = []
@@ -64,4 +100,6 @@ def sumPrimes():
     print sum
 
 if __name__ == "__main__":
-    testImprovedSieve()
+    testSieveOnlyOddNumbers()
+    #142913828922
+    #149070583624
