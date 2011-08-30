@@ -4,102 +4,137 @@
 __author__="karlo"
 __date__ ="$Jun 25, 2011 6:13:28 PM$"
 
-def testSieve():
-    sieve(2000000)
-def testSieveOnlyOddNumbers():
-    sieveUsingOnlyOddNumbers(2*1000*1000)
-def sieveUsingOnlyOddNumbers(upperLimit):
-    import math
-    upperLimitOnlyOddNumber = (upperLimit -1)/2
-    limitOnlyOddNumbersUpToSqrt = int(math.sqrt(upperLimit)-1)/2
-    indexEsOfNumbers = initNumbersAllCrosed(upperLimitOnlyOddNumber)
-    indexEsOfNumbers = unCrossNotPrimesInNumbers(indexEsOfNumbers,
-                                                 upperLimitOnlyOddNumber,
-                                                 limitOnlyOddNumbersUpToSqrt)
-    sumOfPrimeNumbers = calcSumOfPrimes(indexEsOfNumbers)
-    print sumOfPrimeNumbers
-def initNumbersAllCrosed(upperLimit):
-    i = 1
-    numbers = []
-    while i <= upperLimit:
-        numbers = addCrosed(numbers)
-        i = i + 1
-    return numbers
-def addCrosed(number):
-    number.append(False)
-    return number
-def unCrossNotPrimesInNumbers(numbers,
-                              upperLimitOnlyOddNumber,
-                              limitOnlyOddNumbersUpToSqrt):        
-    rangeLimitOnlyOddNumbersUpToSqrt = range(1, limitOnlyOddNumbersUpToSqrt+1)
-    for i in rangeLimitOnlyOddNumbersUpToSqrt:
-        if isCrosed(numbers[i]):
-            j = calcSquareForOddNumberFromIndex(i)
-            while j < upperLimitOnlyOddNumber:
-                numbers = unCrossNumber(numbers,j)
-                j = j + calcOddFromIndex(i)
-    return numbers
-def isCrosed(number):
-    if not number:
-        return True
-    else:
-        return False
-def unCrossNumber(numbers,indexOfNumber):
-    numbers[indexOfNumber] = True
-    return numbers
-def calcSquareForOddNumberFromIndex(i):
-    return 2*i*(i+1)
-def calcOddFromIndex(i):
-    return 2*i+1
-def onlyOddPrimes(numbers):
-    #because 1 is not prime number
-    return numbers[1:]
-def calcSumOfPrimes(primes):
-    sumOfPrimeNumbers = 0
-    onlyEvenPrimeNumber = 2
-    sumOfPrimeNumbers = sumOfPrimeNumbers + onlyEvenPrimeNumber
-    i = 1
-    for elem in onlyOddPrimes(primes):
-        if isCrosed(elem):
-            sumOfPrimeNumbers = sumOfPrimeNumbers + calcOddFromIndex(i)
-        i = i + 1
-    return sumOfPrimeNumbers
-def sieve(limit):
-    import math
-    primes = []
-    primes.append(False)
-    primes.append(False)
-    primes.append(True)
-    i = 3
-    while i < limit+1:
-        if i%2 == 0:
-            primes.append(False)
+class SieveAlgorithm:
+
+
+    def __init__(self,calculatePrimesUpTo):
+        self.calculatePrimesUpTo = calculatePrimesUpTo
+        self.numberOfOddNumbers = (self.calculatePrimesUpTo -1)/2
+        import math
+        self.OddSieveMagicNumber = int(math.sqrt(calculatePrimesUpTo)-1)/2
+        self.SieveMagicNumber = int(math.sqrt(self.calculatePrimesUpTo)+1)
+        self.listOfIndexForOddNumbers = []
+        self.listOfIndexForAllNumbers = []
+        self.initOddNumbersAllCrosed()
+        self.initNumbers()
+        
+    
+    def initOddNumbersAllCrosed(self):
+        i = 1        
+        while i <= self.numberOfOddNumbers:
+            self.addCrosed(self.listOfIndexForOddNumbers)
+            i = i + 1
+            
+            
+    def initNumbers(self):
+        self.addUnCrosed(self.listOfIndexForAllNumbers)
+        self.addUnCrosed(self.listOfIndexForAllNumbers)
+        self.addCrosed(self.listOfIndexForAllNumbers)
+        i = 3
+        while i < self.calculatePrimesUpTo+1:
+            if self.isEven(i):
+                self.addUnCrosed(self.listOfIndexForAllNumbers)
+            else:
+                self.addCrosed(self.listOfIndexForAllNumbers)
+            i = i + 1
+
+
+    def addCrosed(self,list):
+        list.append(False)
+
+
+    def addUnCrosed(self,list):
+        list.append(True)
+
+
+    def isEven(self,number):
+        if number%2 == 0:
+            return True
         else:
-            primes.append(True)
-        i = i + 1
-    for i in range(3,int(math.sqrt(limit)+1)):
-        if primes[i]:
-            j = i*i
-            while j < limit:
-                primes[j] = False
-                j = j + i
-    sum = 0
-    for i in range(2,len(primes)):
-        if primes[i]:
-            sum = sum + i
-    print sum
-def sumPrimes():
-    import problem00003
-    sum = 0
-    i = 2
-    while i<2000000:
-        if problem00003.isPrime(i):
-            sum = sum + i
-            #print sum,i
-        i += 1
-    print sum
+            return False
+
+
+    def usingOnlyOddNumbers(self):
+        self.unCrossNotPrimesInNumbers()
+        return self.calcSumOfPrimes()
+
+
+    def unCrossNotPrimesInNumbers(self):
+        OddSieveMagicNumberRange = range(1, self.OddSieveMagicNumber+1)
+        for i in OddSieveMagicNumberRange:
+            if self.isCrosed(self.listOfIndexForOddNumbers[i-1]):
+                j = self.calcSquareIndexForOddNumberFromIndex(i)
+                while j <= self.numberOfOddNumbers:
+                    self.unCross(self.listOfIndexForOddNumbers,j-1)
+                    j = j + self.calcOddFromIndex(i)
+
+
+    def isCrosed(self,number):
+        if not number:
+            return True
+        else:
+            return False
+
+
+    def calcSquareIndexForOddNumberFromIndex(self,i):
+        return 2*i*(i+1)    
+
+
+    def calcOddFromIndex(self,i):
+        return 2*i+1
+
+
+    def calcSumOfPrimes(self):
+        sumOfPrimeNumbers = 0
+        onlyEvenPrimeNumber = 2
+        sumOfPrimeNumbers = sumOfPrimeNumbers + onlyEvenPrimeNumber
+        i = 1
+        for elem in self.listOfIndexForOddNumbers:
+            if self.isCrosed(elem):
+                sumOfPrimeNumbers = sumOfPrimeNumbers + self.calcOddFromIndex(i)
+            i = i + 1
+        return sumOfPrimeNumbers    
+
+
+    def usingSieve(self):                
+        for i in range(3,self.SieveMagicNumber):
+            if self.isCrosed(self.listOfIndexForAllNumbers[i]):
+                j = i*i
+                while j < self.calculatePrimesUpTo:
+                    self.unCross(self.listOfIndexForAllNumbers,j)
+                    j = j + i
+        sum = 0
+        i = 0
+        for i in range(2,len(self.listOfIndexForAllNumbers)):
+            if self.isCrosed(self.listOfIndexForAllNumbers[i]):                
+                sum = sum + i
+        return sum
+
+
+    def cross(self,list,index):
+        list[index] = False
+
+
+    def unCross(self,list,index):
+        list[index] = True
+
+
+    def sumPrimesByBruteForce(self):
+        import problem00003
+        sum = 0
+        i = 2
+        while i<=self.calculatePrimesUpTo:
+            if problem00003.isPrime(i):
+                sum = sum + i                
+            i += 1
+        return sum
+        
 
 if __name__ == "__main__":
-    testSieveOnlyOddNumbers()
+    sieveImproved = SieveAlgorithm(10)
+    print sieveImproved.usingOnlyOddNumbers()
+    print sieveImproved.listOfIndexForOddNumbers
+    print sieveImproved.sumPrimesByBruteForce()
+    print sieveImproved.usingSieve()
     #142913828922
     #149070583624

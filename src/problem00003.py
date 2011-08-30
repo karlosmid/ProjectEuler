@@ -12,17 +12,13 @@ def maxPrimeFactor(m):
            return m
 
 def genPrime():
-    i = 2
-    prime = True
+    i = 2    
     while 1:
-        if i not in [2,3]:
-            for j in range(2,i):
-                if i%j == 0:
-                    prime = False        
-        if prime:
+        if i in [2,3]:
+            yield i
+        if isPrime(i):
             yield i            
-        i = i + 1
-        prime = True
+        i = i + 1        
 def isPrime(n):
     """
       >>> isPrime(1)
