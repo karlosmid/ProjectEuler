@@ -24,70 +24,49 @@ class GoThroughGrid:
         return grid
 
     
-    def goTo(self,direction,gridCoordinate,currentDepth):
-        print gridCoordinate
+    def goTo(self,direction,gridCoordinate,currentDepth):        
         x = gridCoordinate[0]
-        y = gridCoordinate[1]
-        if self.areGridCoordinatesInBoundaries(direction,x,y):
+        y = gridCoordinate[1]        
+        if self.areGridCoordinatesInBoundaries(x,y):
             if currentDepth < self.depth:                
-                return int(self.grid[x][y]) * self.goTo(direction,self.updateGridCoordinate(direction,gridCoordinate),currentDepth+1)
+                gridCoordinate = self.updateGridCoordinate(direction,gridCoordinate)                
+                return int(self.grid[x][y]) * self.goTo(direction,gridCoordinate,currentDepth+1)
             elif currentDepth == self.depth:                
                 return int(self.grid[x][y])
         else:
             return 0
 
 
-    def areGridCoordinatesInBoundaries(self,direction,x,y):
-        if direction == 'right':
-            if x > self.noOfGridColumns:
-                return False
-        elif direction == 'right-down':
-            if x > self.noOfGridColumns or y > self.noOfGridRows:
-                return False
-        elif direction == 'down':
-            if y > self.noOfGridRows:
-                return False
-        elif direction == 'left-down':
-            if x < 0 or y > self.noOfGridRows:
-                return False
-        elif direction == 'left':
-            if x < 0:
-                return False
-        elif direction == 'left-up':
-            if x < 0 or y < 0:
-                return False
-        elif direction == 'up':
-            if y < 0:
-                return False
-        elif direction == 'up-right':
-            if x > self.noOfGridColumns or y < 0:
-                return False
-        elif direction not in self.directions:
-            raise TypeError('Unknown direction!')
+    def areGridCoordinatesInBoundaries(self,x,y):
+        
+        if y > self.noOfGridColumns - 1 or y < 0:
+            return False
+        elif x > self.noOfGridRows - 1 or x < 0:
+            return False
         return True
 
 
     def updateGridCoordinate(self,direction,gridCoordinate):
         if direction == 'right':
-            gridCoordinate[0] =+1
+            gridCoordinate[1] +=1
         elif direction == 'right-down':
-            gridCoordinate[0] =+1
-            gridCoordinate[1] =+1
+            gridCoordinate[1] +=1
+            gridCoordinate[0] +=1
         elif direction == 'down':
-            gridCoordinate[1] =+1
+            gridCoordinate[0] +=1
         elif direction == 'left-down':
-            gridCoordinate[0] =-1
-            gridCoordinate[1] =+1
+            gridCoordinate[1] -=1
+            gridCoordinate[0] +=1
         elif direction == 'left':
-            gridCoordinate[0] =-1
+            gridCoordinate[1] -=1
         elif direction == 'left-up':
-            gridCoordinate[0] =-1
-            gridCoordinate[1] =-1
+            gridCoordinate[1] -=1
+            gridCoordinate[0] -=1
         elif direction == 'up':
-            gridCoordinate[1] =-1
+            gridCoordinate[0] -=1
         elif direction == 'up-right':
-            gridCoordinate[0] =+1
-            gridCoordinate[1] =-1
+            gridCoordinate[1] +=1
+            gridCoordinate[0] -=1
         elif direction not in self.directions:
             raise TypeError('Unknown direction!')
         return gridCoordinate
@@ -97,7 +76,7 @@ class GoThroughGrid:
         for i in xrange(self.noOfGridColumns):
             for j in xrange(self.noOfGridRows):
                for direction in self.directions:
-                   product = self.goTo(direction,[i,j],0)                   
+                   product = self.goTo(direction,[i,j],1)
                    if product > max:
                        max = product
         return max
