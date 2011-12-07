@@ -9,30 +9,33 @@ import problem00010
 class TriangleNumber:
     #http://projecteuler.net/problem=12, need to register on home page.
 
+    def __init__(self):
+        self.sieveImproved = problem00010.SieveAlgorithm(65500)
+        self.sieveImproved.usingSieve()
+        self.lOfCrossedPrimes = self.sieveImproved.listOfCrossedPrimes
+
     def calcTriangle(self,n):
         return n*(n+1)/2
 
-    def calcNumberOfDivisorsUsingPrimes(self,n):                
-        if n == 1:
-            return 1
-        elif n == 2:
-            return 2
+    def calcPrimeExponent(self,prime,number):
+        primeExponent = 0
+        while number%prime == 0:
+                primeExponent = primeExponent + 1
+                number = number/prime
+        return primeExponent
+    def calcNumberOfDivisorsUsingPrimes(self,n):
         triangleNumber = self.calcTriangle(n)
-        noOfDivisors = 1
-        sieveImproved = problem00010.SieveAlgorithm(n)
-        lOfPrimes = sieveImproved.listOfIndexForOddNumbers        
-        index = 1
-        for prime in lOfPrimes:
-            if sieveImproved.isCrosed(prime):
-                prime = sieveImproved.calcOddFromIndex(index)
+        noOfDivisors = 1        
+#        print self.lOfCrossedPrimes
+        primeValue = 0
+        for primeCrossedFlag in self.lOfCrossedPrimes:
+            if self.sieveImproved.isCrosed(primeCrossedFlag):                
                 primeExponent = 0
-                triangleNumberTmp = triangleNumber
-                while triangleNumberTmp%prime == 0:
-                    primeExponent = primeExponent + 1
-                    triangleNumberTmp = triangleNumberTmp/prime
-                noOfDivisors = (primeExponent + 1) * noOfDivisors
-            index = index + 1
-        return noOfDivisors + 2
+                primeExponent = self.calcPrimeExponent(primeValue,triangleNumber)
+                if primeExponent > 0:
+                    noOfDivisors = (primeExponent + 1) * noOfDivisors
+            primeValue = primeValue + 1
+        return noOfDivisors
 
 
     def calcNumberOfDivisors(self,n):        
@@ -40,16 +43,21 @@ class TriangleNumber:
             return 1
         elif n == 2:
             return 2
-        noOfDivisors = 2
+#        noOfDivisors = 2
+        noOfDivisors = 0
         triangleNumber = self.calcTriangle(n)
-        upperLimit = n/2 + 1
-        for num in range(2,upperLimit+1):
+#        upperLimit = n/2 + 1
+        upperLimit = n
+        for num in range(1,upperLimit + 1):
              if triangleNumber%num == 0:            
-                 noOfDivisors = noOfDivisors + 2                 
+                 if triangleNumber/num > n:
+                     noOfDivisors = noOfDivisors + 2
+                 else:
+                     noOfDivisors = noOfDivisors + 1
         return noOfDivisors    
     def findFirstTriangleNumberWithGraterNumberOfDivisors(self,noOfDivisorsEdge):
         n = 1
-        #noOfDivisors = self.calcNumberOfDivisors(1)
+#        noOfDivisors = self.calcNumberOfDivisors(1)
         noOfDivisors = self.calcNumberOfDivisorsUsingPrimes(1)
         while noOfDivisors < noOfDivisorsEdge:
             n = n + 1
@@ -59,6 +67,6 @@ class TriangleNumber:
 
 if __name__ == "__main__":
     triangle = TriangleNumber()
-    print triangle.calcNumberOfDivisors(4)
-#    print triangle.findFirstTriangleNumberWithGraterNumberOfDivisors(5)
-    print triangle.calcNumberOfDivisorsUsingPrimes(4)
+    print triangle.calcNumberOfDivisors(53)
+#    print triangle.findFirstTriangleNumberWithGraterNumberOfDivisors(500)
+    print triangle.calcNumberOfDivisorsUsingPrimes(53)

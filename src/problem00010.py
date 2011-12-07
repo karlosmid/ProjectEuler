@@ -14,7 +14,7 @@ class SieveAlgorithm:
         self.OddSieveMagicNumber = int(math.sqrt(calculatePrimesUpTo)-1)/2
         self.SieveMagicNumber = int(math.sqrt(self.calculatePrimesUpTo)+1)
         self.listOfIndexForOddNumbers = []
-        self.listOfIndexForAllNumbers = []
+        self.listOfCrossedPrimes = []
         self.initOddNumbersAllCrosed()
         self.initNumbers()
         
@@ -27,15 +27,15 @@ class SieveAlgorithm:
             
             
     def initNumbers(self):
-        self.addUnCrosed(self.listOfIndexForAllNumbers)
-        self.addUnCrosed(self.listOfIndexForAllNumbers)
-        self.addCrosed(self.listOfIndexForAllNumbers)
+        self.addUnCrosed(self.listOfCrossedPrimes)
+        self.addUnCrosed(self.listOfCrossedPrimes)
+        self.addCrosed(self.listOfCrossedPrimes)
         i = 3
         while i < self.calculatePrimesUpTo+1:
             if self.isEven(i):
-                self.addUnCrosed(self.listOfIndexForAllNumbers)
+                self.addUnCrosed(self.listOfCrossedPrimes)
             else:
-                self.addCrosed(self.listOfIndexForAllNumbers)
+                self.addCrosed(self.listOfCrossedPrimes)
             i = i + 1
 
 
@@ -96,17 +96,17 @@ class SieveAlgorithm:
         return sumOfPrimeNumbers    
 
 
-    def usingSieve(self):                
+    def usingSieve(self):
         for i in range(3,self.SieveMagicNumber):
-            if self.isCrosed(self.listOfIndexForAllNumbers[i]):
+            if self.isCrosed(self.listOfCrossedPrimes[i]):
                 j = i*i
                 while j < self.calculatePrimesUpTo:
-                    self.unCross(self.listOfIndexForAllNumbers,j)
+                    self.unCross(self.listOfCrossedPrimes,j)
                     j = j + i
         sum = 0
         i = 0
-        for i in range(2,len(self.listOfIndexForAllNumbers)):
-            if self.isCrosed(self.listOfIndexForAllNumbers[i]):                
+        for i in range(2,len(self.listOfCrossedPrimes)):
+            if self.isCrosed(self.listOfCrossedPrimes[i]):
                 sum = sum + i
         return sum
 

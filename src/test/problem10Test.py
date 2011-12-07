@@ -26,7 +26,7 @@ class  Problem10TestCase(unittest.TestCase):
     def testInitNumbers(self):
         sieve = problem00010.SieveAlgorithm(10)
         expected = [True,True,False,False,True,False,True,False,True,False,True]
-        result = sieve.listOfIndexForAllNumbers
+        result = sieve.listOfCrossedPrimes
         self.assertListEqual(expected, result)
 
 
@@ -158,7 +158,7 @@ class  Problem10TestCase(unittest.TestCase):
         result = []
         result.append(sieve.sumPrimesByBruteForce())
         result.append(sieve.usingSieve())
-        result.append(sieve.usingOnlyOddNumbers())
+        result.append(sieve.usingSieve())
         self.assertListEqual(expected,result)
 
 
