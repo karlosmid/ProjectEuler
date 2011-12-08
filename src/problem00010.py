@@ -14,9 +14,9 @@ class SieveAlgorithm:
         self.OddSieveMagicNumber = int(math.sqrt(calculatePrimesUpTo)-1)/2
         self.SieveMagicNumber = int(math.sqrt(self.calculatePrimesUpTo)+1)
         self.listOfIndexForOddNumbers = []
-        self.listOfCrossedPrimes = []
+        self.listOfCrossedPrimesWhereIndexIsPrimeValue = []
         self.initOddNumbersAllCrosed()
-        self.initNumbers()
+        self.initPrimeNumbers()
         
     
     def initOddNumbersAllCrosed(self):
@@ -26,17 +26,24 @@ class SieveAlgorithm:
             i = i + 1
             
             
-    def initNumbers(self):
-        self.addUnCrosed(self.listOfCrossedPrimes)
-        self.addUnCrosed(self.listOfCrossedPrimes)
-        self.addCrosed(self.listOfCrossedPrimes)
+    def initPrimeNumbers(self):
+        self.addUnCrosed(self.listOfCrossedPrimesWhereIndexIsPrimeValue)
+        self.addUnCrosed(self.listOfCrossedPrimesWhereIndexIsPrimeValue)
+        self.addCrosed(self.listOfCrossedPrimesWhereIndexIsPrimeValue)
         i = 3
         while i < self.calculatePrimesUpTo+1:
             if self.isEven(i):
-                self.addUnCrosed(self.listOfCrossedPrimes)
+                self.addUnCrosed(self.listOfCrossedPrimesWhereIndexIsPrimeValue)
             else:
-                self.addCrosed(self.listOfCrossedPrimes)
+                self.addCrosed(self.listOfCrossedPrimesWhereIndexIsPrimeValue)
             i = i + 1
+
+        for i in range(3,self.SieveMagicNumber):
+            if self.isCrosed(self.listOfCrossedPrimesWhereIndexIsPrimeValue[i]):
+                j = i*i
+                while j < self.calculatePrimesUpTo:
+                    self.unCross(self.listOfCrossedPrimesWhereIndexIsPrimeValue,j)
+                    j = j + i
 
 
     def addCrosed(self,list):
@@ -96,17 +103,11 @@ class SieveAlgorithm:
         return sumOfPrimeNumbers    
 
 
-    def usingSieve(self):
-        for i in range(3,self.SieveMagicNumber):
-            if self.isCrosed(self.listOfCrossedPrimes[i]):
-                j = i*i
-                while j < self.calculatePrimesUpTo:
-                    self.unCross(self.listOfCrossedPrimes,j)
-                    j = j + i
+    def calcSumOfPrimesUsingSieve(self):        
         sum = 0
         i = 0
-        for i in range(2,len(self.listOfCrossedPrimes)):
-            if self.isCrosed(self.listOfCrossedPrimes[i]):
+        for i in range(2,len(self.listOfCrossedPrimesWhereIndexIsPrimeValue)):
+            if self.isCrosed(self.listOfCrossedPrimesWhereIndexIsPrimeValue[i]):
                 sum = sum + i
         return sum
 
@@ -135,6 +136,6 @@ if __name__ == "__main__":
     print sieveImproved.usingOnlyOddNumbers()
     print sieveImproved.listOfIndexForOddNumbers
     print sieveImproved.sumPrimesByBruteForce()
-    print sieveImproved.usingSieve()
+    print sieveImproved.calcSumOfPrimesUsingSieve()
     #142913828922
     #149070583624

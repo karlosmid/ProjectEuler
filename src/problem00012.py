@@ -10,9 +10,8 @@ class TriangleNumber:
     #http://projecteuler.net/problem=12, need to register on home page.
 
     def __init__(self):
-        self.sieveImproved = problem00010.SieveAlgorithm(65500)
-        self.sieveImproved.usingSieve()
-        self.lOfCrossedPrimes = self.sieveImproved.listOfCrossedPrimes
+        self.sieveImproved = None
+        self.lOfCrossedPrimes = []
 
     def calcTriangle(self,n):
         return n*(n+1)/2
@@ -23,7 +22,21 @@ class TriangleNumber:
                 primeExponent = primeExponent + 1
                 number = number/prime
         return primeExponent
+
+    def calcNumberOfDivisorsUsingBruteForce(self,n):
+        triangleNumber = self.calcTriangle(n)
+        if triangleNumber > 1:
+            noOfDivisors = 2
+        else:
+            noOfDivisors = 1
+        for number in range(2,triangleNumber):
+            if triangleNumber % number == 0:
+                noOfDivisors = noOfDivisors + 1
+        return noOfDivisors
+
     def calcNumberOfDivisorsUsingPrimes(self,n):
+        self.sieveImproved = problem00010.SieveAlgorithm(65500)        
+        self.lOfCrossedPrimes = self.sieveImproved.listOfCrossedPrimesWhereIndexIsPrimeValue
         triangleNumber = self.calcTriangle(n)
         noOfDivisors = 1        
 #        print self.lOfCrossedPrimes
@@ -55,18 +68,18 @@ class TriangleNumber:
                  else:
                      noOfDivisors = noOfDivisors + 1
         return noOfDivisors    
-    def findFirstTriangleNumberWithGraterNumberOfDivisors(self,noOfDivisorsEdge):
+    def findFirstTriangleNumberWithGraterNumberOfDivisors(self,noOfDivisorsEdge,algorithm):
         n = 1
-#        noOfDivisors = self.calcNumberOfDivisors(1)
-        noOfDivisors = self.calcNumberOfDivisorsUsingPrimes(1)
+        noOfDivisors = algorithm(n)
         while noOfDivisors < noOfDivisorsEdge:
             n = n + 1
-#            noOfDivisors = self.calcNumberOfDivisors(n)
-            noOfDivisors = self.calcNumberOfDivisorsUsingPrimes(n)
+            noOfDivisors = algorithm(n)
         return [self.calcTriangle(n),n,noOfDivisors]
 
 if __name__ == "__main__":
     triangle = TriangleNumber()
-    print triangle.calcNumberOfDivisors(53)
-#    print triangle.findFirstTriangleNumberWithGraterNumberOfDivisors(500)
-    print triangle.calcNumberOfDivisorsUsingPrimes(53)
+#    print triangle.calcNumberOfDivisors(53)
+    print triangle.findFirstTriangleNumberWithGraterNumberOfDivisors(50,triangle.calcNumberOfDivisorsUsingPrimes)
+    print triangle.findFirstTriangleNumberWithGraterNumberOfDivisors(50,triangle.calcNumberOfDivisorsUsingBruteForce)
+    print triangle.findFirstTriangleNumberWithGraterNumberOfDivisors(50,triangle.calcNumberOfDivisors)
+#    print triangle.calcNumberOfDivisorsUsingPrimes(53)

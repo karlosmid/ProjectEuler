@@ -23,10 +23,10 @@ class  Problem10TestCase(unittest.TestCase):
         self.assertListEqual(expected, result)
 
 
-    def testInitNumbers(self):
+    def testInitPrimeNumbers(self):
         sieve = problem00010.SieveAlgorithm(10)
-        expected = [True,True,False,False,True,False,True,False,True,False,True]
-        result = sieve.listOfCrossedPrimes
+        expected = [True,True,False,False,True,False,True,False,True,True,True]
+        result = sieve.listOfCrossedPrimesWhereIndexIsPrimeValue
         self.assertListEqual(expected, result)
 
 
@@ -102,10 +102,10 @@ class  Problem10TestCase(unittest.TestCase):
         self.assertEqual(expected,sieve.calcSumOfPrimes())
 
    
-    def testUsingSieve(self):
+    def testcalcSumOfPrimesUsingSieve(self):
         sieve = problem00010.SieveAlgorithm(11)
         expected = 28
-        result = sieve.usingSieve()
+        result = sieve.calcSumOfPrimesUsingSieve()
         self.assertEqual(expected,result)
 
 
@@ -137,7 +137,7 @@ class  Problem10TestCase(unittest.TestCase):
         expected = [100,100,100]
         result = []
         result.append(sieve.sumPrimesByBruteForce())
-        result.append(sieve.usingSieve())
+        result.append(sieve.calcSumOfPrimesUsingSieve())
         result.append(sieve.usingOnlyOddNumbers())
         self.assertListEqual(expected,result)
 
@@ -147,7 +147,7 @@ class  Problem10TestCase(unittest.TestCase):
         expected = [28,28,28]
         result = []
         result.append(sieve.sumPrimesByBruteForce())
-        result.append(sieve.usingSieve())
+        result.append(sieve.calcSumOfPrimesUsingSieve())
         result.append(sieve.usingOnlyOddNumbers())
         self.assertListEqual(expected,result)
 
@@ -157,8 +157,8 @@ class  Problem10TestCase(unittest.TestCase):
         expected = [92953,92953,92953]
         result = []
         result.append(sieve.sumPrimesByBruteForce())
-        result.append(sieve.usingSieve())
-        result.append(sieve.usingSieve())
+        result.append(sieve.calcSumOfPrimesUsingSieve())
+        result.append(sieve.calcSumOfPrimesUsingSieve())
         self.assertListEqual(expected,result)
 
 
