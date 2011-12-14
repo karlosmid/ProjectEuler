@@ -14,6 +14,7 @@ class TriangleNumber:
         self.lOfCrossedPrimes = []
         self.noOfPrimes = noOfPrimes
         self.sieveImproved = problem00010.SieveAlgorithm(self.noOfPrimes)
+        self.lOfCrossedPrimes = self.sieveImproved.listOfCrossedPrimesWhereIndexIsPrimeValue
 
     def calcTriangle(self,n):
         return n*(n+1)/2
@@ -25,27 +26,45 @@ class TriangleNumber:
                 number = number/prime
         return primeExponent
 
-    def calcNumberOfDivisorsUsingBruteForce(self,n):        
-        if n > 1:
+    def calcNumberOfDivisorsUsingBruteForceForTriangleNumber(self,upToN):
+        triangleNumber = self.calcTriangle(upToN)
+        if triangleNumber > 1:
             noOfDivisors = 2
         else:
             noOfDivisors = 1
-        for number in range(2,n):
-            if n % number == 0:
+        for number in range(2,triangleNumber):
+            if triangleNumber % number == 0:
                 noOfDivisors = noOfDivisors + 1
         return noOfDivisors
 
-    def calcNumberOfDivisorsUsingPrimes(self,n):        
-        self.lOfCrossedPrimes = self.sieveImproved.listOfCrossedPrimesWhereIndexIsPrimeValue        
+    def calcNumberOfDivisorsUsingPrimesForTriangleNumber(self,upToN):
+        triangleNumber = self.calcTriangle(upToN)        
         noOfDivisors = 1
         primeValue = 0
         for primeCrossedFlag in self.lOfCrossedPrimes:
             if self.sieveImproved.isCrosed(primeCrossedFlag):                
                 primeExponent = 0
+                primeExponent = self.calcPrimeExponent(primeValue,triangleNumber)
+                if primeExponent > 0:
+                    noOfDivisors = (primeExponent + 1) * noOfDivisors
+            primeValue = primeValue + 1
+            if primeValue > upToN:
+                return noOfDivisors
+        return noOfDivisors
+    
+
+    def calcNumberOfDivisorsUsingPrimes(self,n):        
+        noOfDivisors = 1
+        primeValue = 0
+        for primeCrossedFlag in self.lOfCrossedPrimes:
+            if self.sieveImproved.isCrosed(primeCrossedFlag):
+                primeExponent = 0
                 primeExponent = self.calcPrimeExponent(primeValue,n)
                 if primeExponent > 0:
                     noOfDivisors = (primeExponent + 1) * noOfDivisors
             primeValue = primeValue + 1
+            if primeValue > n:
+                return noOfDivisors
         return noOfDivisors
 
     def calcNumberOfDivisorsForTriangleNumber(self,upToN):
@@ -67,11 +86,9 @@ class TriangleNumber:
         n = 1
         noOfDivisors = noOfDivisorsAlgorithm(n)
         while noOfDivisors < noOfDivisorsEdge:
-            n = n + 1
-            if noOfDivisorsAlgorithm.__name__ == 'calcNumberOfDivisorsForTriangleNumber':
-                noOfDivisors = noOfDivisorsAlgorithm(n)            
-            else:
-                noOfDivisors = noOfDivisorsAlgorithm(self.calcTriangle(n))                
+            n = n + 1            
+            noOfDivisors = noOfDivisorsAlgorithm(n)                        
+            noOfDivisors = noOfDivisorsAlgorithm(n)
         return [self.calcTriangle(n),n,noOfDivisors]
 
     def findFirstTriangleNumberWithGraterNumberOfDivisorsImprovedPrimes(self,noOfDivisorsEdge):
@@ -90,8 +107,8 @@ if __name__ == "__main__":
     triangle = TriangleNumber(65000)
     triangleImproved = TriangleNumber(1000)
 #    print triangle.calcNumberOfDivisors(53)
-    print triangle.findFirstTriangleNumberWithGraterNumberOfDivisors(50,triangle.calcNumberOfDivisorsUsingPrimes)
-    print triangle.findFirstTriangleNumberWithGraterNumberOfDivisors(50,triangle.calcNumberOfDivisorsUsingBruteForce)
+    print triangle.findFirstTriangleNumberWithGraterNumberOfDivisors(50,triangle.calcNumberOfDivisorsUsingPrimesForTriangleNumber)
+    print triangle.findFirstTriangleNumberWithGraterNumberOfDivisors(50,triangle.calcNumberOfDivisorsUsingBruteForceForTriangleNumber)
     print triangle.findFirstTriangleNumberWithGraterNumberOfDivisors(50,triangle.calcNumberOfDivisorsForTriangleNumber)
     print triangleImproved.findFirstTriangleNumberWithGraterNumberOfDivisorsImprovedPrimes(50)
 #    print triangle.calcNumberOfDivisorsUsingPrimes(53)

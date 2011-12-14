@@ -16,12 +16,12 @@ class  Problem12TestCase(unittest.TestCase):
     
     def testImprovedNumberOfDivisorsAgainstBruteForce(self):
         for n in range(101,600):
-            self.assertEqual(self.triangle.calcNumberOfDivisorsUsingBruteForce(self.triangle.calcTriangle(n)),
+            self.assertEqual(self.triangle.calcNumberOfDivisorsUsingBruteForceForTriangleNumber(n),
                              self.triangle.calcNumberOfDivisorsForTriangleNumber(n))
 
     def testfindFirstTriangleNumberWithGraterNumberOfDivisorsUsingBruteForce(self):
         result = self.triangle.findFirstTriangleNumberWithGraterNumberOfDivisors(50,
-        self.triangle.calcNumberOfDivisorsUsingBruteForce)
+        self.triangle.calcNumberOfDivisorsUsingBruteForceForTriangleNumber)
         self.assertEqual([25200, 224, 90],result)
     def testfindFirstTriangleNumberWithGraterNumberOfDivisorsUsingImprovedAlgorithm(self):
         result = self.triangle.findFirstTriangleNumberWithGraterNumberOfDivisors(50,
@@ -29,7 +29,7 @@ class  Problem12TestCase(unittest.TestCase):
         self.assertEqual([25200, 224, 90],result)
     def testfindFirstTriangleNumberWithGraterNumberOfDivisorsUsingPrimeNumbers(self):
         result = self.triangle.findFirstTriangleNumberWithGraterNumberOfDivisors(50,
-        self.triangle.calcNumberOfDivisorsUsingPrimes)
+        self.triangle.calcNumberOfDivisorsUsingPrimesForTriangleNumber)
         self.assertEqual([25200, 224, 90],result)
     def testfindFirstTriangleNumberWithGraterNumberOfDivisorsUsingPrimeNumbersImproved(self):
         triangleImproved = problem00012.TriangleNumber(1000)
@@ -41,7 +41,7 @@ class  Problem12TestCase(unittest.TestCase):
         self.assertEqual([76576500, 12375, 576],result)
     def testfindFirstTriangleNumberWithGraterNumberOfDivisorsUsingPrimes(self):
         result = self.triangle.findFirstTriangleNumberWithGraterNumberOfDivisors(500,
-        self.triangle.calcNumberOfDivisorsUsingPrimes)
+        self.triangle.calcNumberOfDivisorsUsingPrimesForTriangleNumber)
         self.assertEqual([76576500, 12375, 576],result)
     def testfindFirstTriangleNumberWithGraterNumberOfDivisorsUsingPrimesImproved(self):
         triangleImproved = problem00012.TriangleNumber(1000)
@@ -50,13 +50,13 @@ class  Problem12TestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     suite = unittest.TestSuite()
-#    suite.addTest(Problem12TestCase('testImprovedNumberOfDivisorsAgainstBruteForce'))
-#    suite.addTest(Problem12TestCase('testfindFirstTriangleNumberWithGraterNumberOfDivisorsUsingBruteForce'))
-#    suite.addTest(Problem12TestCase('testfindFirstTriangleNumberWithGraterNumberOfDivisorsUsingImprovedAlgorithm'))
-#    suite.addTest(Problem12TestCase('testfindFirstTriangleNumberWithGraterNumberOfDivisorsUsingPrimeNumbers'))
-#    suite.addTest(Problem12TestCase('testfindFirstTriangleNumberWithGraterNumberOfDivisorsUsingImprovedAlgorithmSolution'))
-#    suite.addTest(Problem12TestCase('testfindFirstTriangleNumberWithGraterNumberOfDivisorsUsingPrimeNumbersImproved'))
+    suite.addTest(Problem12TestCase('testImprovedNumberOfDivisorsAgainstBruteForce'))
+    suite.addTest(Problem12TestCase('testfindFirstTriangleNumberWithGraterNumberOfDivisorsUsingBruteForce'))
+    suite.addTest(Problem12TestCase('testfindFirstTriangleNumberWithGraterNumberOfDivisorsUsingImprovedAlgorithm'))
+    suite.addTest(Problem12TestCase('testfindFirstTriangleNumberWithGraterNumberOfDivisorsUsingPrimeNumbers'))
+    suite.addTest(Problem12TestCase('testfindFirstTriangleNumberWithGraterNumberOfDivisorsUsingImprovedAlgorithmSolution'))
+    suite.addTest(Problem12TestCase('testfindFirstTriangleNumberWithGraterNumberOfDivisorsUsingPrimeNumbersImproved'))
     suite.addTest(Problem12TestCase('testfindFirstTriangleNumberWithGraterNumberOfDivisorsUsingPrimes'))
-#    suite.addTest(Problem12TestCase('testfindFirstTriangleNumberWithGraterNumberOfDivisorsUsingPrimesImproved'))
+    suite.addTest(Problem12TestCase('testfindFirstTriangleNumberWithGraterNumberOfDivisorsUsingPrimesImproved'))
     unittest.TextTestRunner(verbosity=2).run(suite)
 
